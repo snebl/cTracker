@@ -48,7 +48,7 @@ client.on(Events.MessageCreate, async message => {
         case 'status':
             const statusEmbed = new EmbedBuilder()
                 .setColor(0xFF1144)
-                .setTitle('DURATIONS:')
+                .setTitle('DURATIONS')
                 .setFooter({ text: 'List does not self-update, run again after editing a time.' })
 
             for (let file of filenames) try {
@@ -142,7 +142,7 @@ client.on(Events.MessageCreate, async message => {
 async function updateSpecialStatus() {
     const statusEmbed = new EmbedBuilder()
         .setColor(0x4287f5)
-        .setTitle('DURATIONS:')
+        .setTitle('DURATIONS')
         .setFooter({ text: 'List automatically updates.' })
 
     let channel = client.channels.cache.get('1362276483393126541')
