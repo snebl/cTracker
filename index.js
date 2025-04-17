@@ -31,6 +31,8 @@ client.on(Events.MessageCreate, async message => {
 
     let filenames = fs.readdirSync(dataPath)
 
+    updateSpecialStatus()
+
     switch (args[0]) {
         case 'user':
             if (message.author.id != adminID) break
@@ -136,6 +138,29 @@ client.on(Events.MessageCreate, async message => {
 
     message.react('⁉️')
 })
+
+async function updateSpecialStatus() {
+    const statusEmbed = new EmbedBuilder()
+        .setColor(0x4287f5)
+        .setTitle('DURATIONS:')
+        .setFooter({ text: 'List automatically updates.' })
+
+    let channel = client.channels.cache.get('1362276483393126541')
+    channel.messages.fetch('1362278226113597482').then(async message => {
+        for (let file of fs.readdirSync(dataPath)) try {
+            let timestamp = JSON.parse(fs.readFileSync(dataPath + file))?.['end']
+            statusEmbed.addFields({
+                name: (await message.guild.members.fetch(file.split('.')[0])).displayName,
+                value: Date.now() < timestamp ? (timestamp > Number.MAX_SAFE_INTEGER ? '\`Never\`' : '<t:' + Math.ceil(timestamp / 1000) + ':R>') : '\`Time completed\`',
+                inline: true
+            })
+        } catch(err) {
+            // TODO
+        }
+
+        message.edit({embeds: [statusEmbed]})
+    })
+}
 
 // LAZY ASF
 function interpretTimeMultiplier(str) {
