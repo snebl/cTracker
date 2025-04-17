@@ -1,0 +1,12 @@
+- custom rules
+    - +rule <s> <t>
+        adds a rule and specifies a time punishment
+    - -rule <n>
+        removes a rule by index
+    - +broke <n>
+        adds time from rule
+
+- tasks
+    - way to remove some of your own time
+
+- status works when replying to someone
