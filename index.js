@@ -215,6 +215,7 @@ function interpretTimeMultiplier(str) {
         case 'infinity':
         case 'infinitys':
         case 'infinities':
+        case 'never':
             return Number.MAX_SAFE_INTEGER // a lot but not so much that it breaks
 
         default:
