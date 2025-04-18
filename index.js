@@ -40,7 +40,7 @@ client.on(Events.MessageCreate, async message => {
             else fs.unlinkSync(dataPath + toID(args[1]) + ext)
 
             updateDedicatedChannelStatusMessage()
-            message.react('✅')
+            indicateSuccess(message)
             return
 
         case 'list':
@@ -62,7 +62,7 @@ client.on(Events.MessageCreate, async message => {
             }
 
             message.channel.send({ embeds: [statusEmbed] })
-            message.react('✅')
+            indicateSuccess(message)
             return
 
         case 'reset':
@@ -72,12 +72,12 @@ client.on(Events.MessageCreate, async message => {
                 newData['end'] = Date.now()
                 fs.writeFileSync(path, JSON.stringify(newData, null, 4))
 
-                message.react('✅')
+                indicateSuccess(message)
                 return
             }
 
             updateDedicatedChannelStatusMessage()
-            message.react('✅')
+            indicateSuccess(message)
             return
 
         case 'blacklist':
@@ -94,7 +94,7 @@ client.on(Events.MessageCreate, async message => {
                     if (rmIndex > -1) {
                         list.splice(rmIndex, 1)
                         fs.writeFileSync(blacklistFile, JSON.stringify(list, null, 4))
-                        message.react('✅')
+                        indicateSuccess(message)
                     } else message.react('❌')
                 }
                 return
@@ -103,7 +103,7 @@ client.on(Events.MessageCreate, async message => {
             list.push(toID(args[1]))
             fs.writeFileSync(blacklistFile, JSON.stringify(list, null, 4))
 
-            message.react('✅')
+            indicateSuccess(message)
             return
 
         default:
@@ -129,7 +129,7 @@ client.on(Events.MessageCreate, async message => {
                 fs.writeFileSync(path, JSON.stringify(data, null, 4))
 
                 updateDedicatedChannelStatusMessage()
-                message.react('✅')
+                indicateSuccess(message)
                 return
             }
 
@@ -139,6 +139,13 @@ client.on(Events.MessageCreate, async message => {
 
     message.react('⁉️')
 })
+
+function indicateSuccess(message) {
+    message.react('✅')
+    setTimeout(() => {
+        message.reactions.removeAll()
+    }, 4000);
+}
 
 async function updateDedicatedChannelStatusMessage() {
     const statusEmbed = new EmbedBuilder()
