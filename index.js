@@ -17,6 +17,11 @@ let dataPath = './data/'
 let ext = '.json'
 let blacklistFile = './blacklist.json'
 
+// this is very bad practice
+process.on('uncaughtException', function(err) {
+    console.log('Caught exception: ' + err)
+})
+
 client.on(Events.MessageCreate, async message => {
 	if (message.guildId != '1150788571331039254') return
 	// if (message.guildId != '819581870740209724') return
