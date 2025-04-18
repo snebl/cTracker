@@ -31,8 +31,6 @@ client.on(Events.MessageCreate, async message => {
 
     let filenames = fs.readdirSync(dataPath)
 
-    updateSpecialStatus()
-
     switch (args[0]) {
         case 'user':
             if (message.author.id != adminID) break
@@ -41,6 +39,7 @@ client.on(Events.MessageCreate, async message => {
             if (isPlus) fs.writeFileSync(dataPath + toID(args[1]) + ext, JSON.stringify({end:Date.now()}, null, 4))
             else fs.unlinkSync(dataPath + toID(args[1]) + ext)
 
+            updateDedicatedChannelStatusMessage()
             message.react('✅')
             return
 
@@ -77,6 +76,7 @@ client.on(Events.MessageCreate, async message => {
                 return
             }
 
+            updateDedicatedChannelStatusMessage()
             message.react('✅')
             return
 
@@ -128,6 +128,7 @@ client.on(Events.MessageCreate, async message => {
                 if (data['end'] > Number.MAX_SAFE_INTEGER) data['end'] = Number.MAX_SAFE_INTEGER + 1
                 fs.writeFileSync(path, JSON.stringify(data, null, 4))
 
+                updateDedicatedChannelStatusMessage()
                 message.react('✅')
                 return
             }
@@ -139,7 +140,7 @@ client.on(Events.MessageCreate, async message => {
     message.react('⁉️')
 })
 
-async function updateSpecialStatus() {
+async function updateDedicatedChannelStatusMessage() {
     const statusEmbed = new EmbedBuilder()
         .setColor(0x4287f5)
         .setTitle('DURATIONS')
